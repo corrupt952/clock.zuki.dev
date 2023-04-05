@@ -1,6 +1,5 @@
 import { alpha, createTheme } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export const Config = {
   title: "clock",
@@ -39,7 +38,6 @@ export const Config = {
         name: "GitHub",
         href: "https://github.com/corrupt952/clock.zuki.dev",
       },
-      { icon: AccountCircleIcon, name: "Developer", href: "https://zuki.dev" },
     ],
   },
 };

@@ -1,18 +1,15 @@
+import { LinkText } from "@/components/Elements/LinkText";
 import { Config } from "@/config";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
-  Button,
   Grid,
   IconButton,
   Menu,
   MenuItem,
-  SvgIcon,
-  Typography,
   styled,
 } from "@mui/material";
 import React from "react";
-import { LinkText } from "@/components/Elements/LinkText";
 
 const NavigationLinkText = styled(LinkText)({
   color: "inherit",
