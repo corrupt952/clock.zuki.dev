@@ -1,13 +1,18 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { styled } from "@mui/material";
+import { Html, Head, Main, NextScript } from "next/document";
+
+const Body = styled("body")({
+  overflowY: "scroll",
+});
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body>
-        <Main />
+      <Body>
         <NextScript />
-      </body>
+        <Main />
+      </Body>
     </Html>
-  )
+  );
 }
