@@ -1,5 +1,6 @@
 import { alpha, createTheme } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 
 export const Config = {
   title: "clock",
@@ -33,6 +34,11 @@ export const Config = {
   }),
   navigation: {
     items: [
+      {
+        icon: HourglassBottomIcon,
+        name: "Timer",
+        href: "/timer",
+      },
       {
         icon: GitHubIcon,
         name: "GitHub",
