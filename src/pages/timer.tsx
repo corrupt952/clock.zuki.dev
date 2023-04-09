@@ -75,7 +75,7 @@ const generateBookmarklet = (pattern: string) => {
 
       play() {
         const startTime = this.audioContext.currentTime;
-        const beepFrequency = 2000; /* Frequency in Hz */
+        const beepFrequency = 800; /* Frequency in Hz */
 
         Array.from({ length: 3 }).forEach((_, index) => {
           const beep = this.createBeep(beepFrequency, startTime + index * 0.2);
@@ -89,7 +89,7 @@ const generateBookmarklet = (pattern: string) => {
         const gainNode = this.audioContext.createGain();
         oscillator.frequency.value = frequency;
         gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(1, startTime + 0.01);
+        gainNode.gain.linearRampToValueAtTime(0.1, startTime + 0.01);
         gainNode.gain.linearRampToValueAtTime(0, startTime + 0.1);
         oscillator.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
@@ -100,13 +100,13 @@ const generateBookmarklet = (pattern: string) => {
     class CountdownTimer {
       constructor() {
         this.intervalId = null;
+        this.alarmIntervalId = null;
         this.pageTitle = document.title;
         if (isFullScreen()) this.timerBoard = this.createBoard();
       }
 
       start(seconds = 0, interval = 1) {
         let remaining = seconds;
-        let timerId = null;
 
         this.updateTitle(remaining);
         if (isFullScreen()) {
@@ -114,22 +114,40 @@ const generateBookmarklet = (pattern: string) => {
           this.updateBoard(remaining);
         }
 
-        if (!timerId) {
-          timerId = setInterval(() => {
+        if (!this.intervalId) {
+          this.intervalId = setInterval(() => {
             remaining -= interval;
 
             this.updateTitle(remaining);
             if (isFullScreen()) this.updateBoard(remaining);
 
             if (remaining <= 0) {
-              clearInterval(timerId);
-              timerId = null;
-              this.resetTitle();
+              this.teardown();
               if (isFullScreen()) this.timerBoard.innerHTML = "Time's up!";
               if (!isNoSound()) this.playAlarm();
             }
           }, interval * 1000);
         }
+      }
+
+      playAlarm() {
+        const alarm = new Alarm();
+        const interval = 1200; /* in milliseconds */
+        this.alarmIntervalId = setInterval(() => alarm.play(), interval);
+
+        const totalDuration = 5000; /* in milliseconds */
+        alarm.play();
+        setTimeout(() => {
+          this.teardown();
+        }, totalDuration);
+      }
+
+      teardown() {
+        this.resetTitle();
+        if (this.intervalId) clearInterval(this.intervalId);
+        if (this.alarmIntervalId) clearInterval(this.alarmIntervalId);
+        this.intervalId = null;
+        this.alarmIntervalId = null;
       }
 
       createBoard() {
@@ -149,7 +167,7 @@ const generateBookmarklet = (pattern: string) => {
         timerBoard.style.fontWeight = "bold";
         timerBoard.style.textAlign = "center";
         timerBoard.onclick = () => {
-          if (this.intervalId) clearInterval(this.intervalId);
+          this.teardown();
           this.timerBoard.remove();
         };
         document.body.appendChild(timerBoard);
@@ -175,20 +193,6 @@ const generateBookmarklet = (pattern: string) => {
 
       resetTitle() {
         document.title = this.pageTitle;
-      }
-
-      playAlarm() {
-        const alarm = new Alarm();
-        const interval = 1100; /* in milliseconds */
-        this.intervalId = setInterval(() => {
-          alarm.play();
-        }, interval);
-
-        const totalDuration = 5000; /* in milliseconds */
-        alarm.play();
-        setTimeout(() => {
-          if (this.intervalId) clearInterval(this.intervalId);
-        }, totalDuration);
       }
     }
 
