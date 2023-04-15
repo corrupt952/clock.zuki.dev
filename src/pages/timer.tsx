@@ -123,7 +123,7 @@ const generateBookmarklet = (pattern: string) => {
 
             if (remaining <= 0) {
               this.teardown();
-              if (isFullScreen()) this.timerBoard.innerHTML = "Time's up!";
+              if (isFullScreen()) this.timerBoard.innerText = "Time's up!";
               if (!isNoSound()) this.playAlarm();
             }
           }, interval * 1000);
@@ -182,7 +182,7 @@ const generateBookmarklet = (pattern: string) => {
       updateBoard(seconds) {
         const minutesString = String(Math.floor(seconds / 60)).padStart(2, "0");
         const secondsString = String(seconds % 60).padStart(2, "0");
-        this.timerBoard.innerHTML = \`\${minutesString}:\${secondsString}\`;
+        this.timerBoard.innerText = \`\${minutesString}:\${secondsString}\`;
       }
 
       updateTitle(seconds) {
