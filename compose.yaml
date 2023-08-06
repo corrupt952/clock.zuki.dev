@@ -1,6 +1,6 @@
 services:
   app:
-    image: node:19
+    image: node:20
     working_dir: /app
     command: npm run dev
     volumes:
